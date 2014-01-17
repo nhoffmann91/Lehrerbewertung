@@ -1,0 +1,153 @@
+## Queries
+############################################## T_LEHRER ################################################################
+1. CREATE TABLE 'bewertung'.'t_lehrer' (
+  
+		'id' INT NOT NULL AUTO_INCREMENT,
+  
+		'vname' VARCHAR(45) NOT NULL,
+  
+		'nname' VARCHAR(45) NOT NULL,
+  
+		PRIMARY KEY ('id'));
+
+
+	INSERT INTO `bewertung`.`t_lehrer` (`vname`, `nname`) VALUES ('Michael','Eiermann')
+	INSERT INTO `bewertung`.`t_lehrer` (`vname`, `nname`) VALUES ('Armin', 'Wittstock')
+   	INSERT INTO `bewertung`.`t_lehrer` (`vname`, `nname`) VALUES ('Silvia', 'Heigl')
+   	INSERT INTO `bewertung`.`t_lehrer` (`vname`, `nname`) VALUES ('Albrecht', 'Pfleiderer')	
+  	INSERT INTO `bewertung`.`t_lehrer` (`vname`, `nname`) VALUES ('Rainer', 'Pröbstel')
+   	INSERT INTO `bewertung`.`t_lehrer` (`vname`, `nname`) VALUES ('Joachim', 'Wiedorn')
+   	INSERT INTO `bewertung`.`t_lehrer` (`vname`, `nname`) VALUES ('Jan-Peter', 'Von Sivers')
+   	INSERT INTO `bewertung`.`t_lehrer` (`vname`, `nname`) VALUES ('Maria', 'Hilz')
+   	INSERT INTO `bewertung`.`t_lehrer` (`vname`, `nname`) VALUES ('Agnes', 'Heeren')
+   	INSERT INTO `bewertung`.`t_lehrer` (`vname`, `nname`) VALUES ('Michaela', 'Plößl')
+
+############################################## T_SCHUELER ################################################################
+2. CREATE TABLE 'bewertung'.'t_schueler' (
+   
+		'id' INT NOT NULL AUTO_INCREMENT,
+  
+		'vname' VARCHAR(45) NOT NULL,
+  
+		'nname' VARCHAR(45) NOT NULL,
+ 
+		'passwort' VARCHAR(8) NOT NULL,
+  
+		PRIMARY KEY ('id'));
+
+	INSERT INTO `bewertung`.`t_schueler` (`vname`, `nname`, `passwort`) VALUES ('Alice-Yvonne', 'Albrich', '12345678')
+	INSERT INTO `bewertung`.`t_schueler` (`vname`, `nname`, `passwort`) VALUES ('Nick', 'Hoffmann', '87654321')
+
+############################################## T_FACH ################################################################
+3. CREATE TABLE 'bewertung'.'t_fach' (
+  
+		'id' INT NOT NULL AUTO_INCREMENT,
+  
+		'kuerzel' VARCHAR(45) NOT NULL,
+  
+		'bez' VARCHAR(45) NOT NULL,
+  
+		PRIMARY KEY ('id'));
+
+	INSERT INTO `bewertung`.`t_fach` (`kuerzel`, `bez`) VALUES ('AEP', 'Anwendungsentwicklung und Progammierung')
+	INSERT INTO `bewertung`.`t_fach` (`kuerzel`, `bez`) VALUES ('ITS', 'Informationstechnologische Systeme')
+	INSERT INTO `bewertung`.`t_fach` (`kuerzel`, `bez`) VALUES ('D', 'Deutsch')
+	INSERT INTO `bewertung`.`t_fach` (`kuerzel`, `bez`) VALUES ('E', 'Englisch')
+	INSERT INTO `bewertung`.`t_fach` (`kuerzel`, `bez`) VALUES ('SP', 'Sport')
+	INSERT INTO `bewertung`.`t_fach` (`kuerzel`, `bez`) VALUES ('SK', 'Sozialkunde')
+	INSERT INTO `bewertung`.`t_fach` (`kuerzel`, `bez`) VALUES ('REL', 'Religion')
+	INSERT INTO `bewertung`.`t_fach` (`kuerzel`, `bez`) VALUES ('BWP', 'Betriebswirtschaftliche Prozesse')
+
+
+############################################## T_FRAGENKATALOG ################################################################
+4. CREATE TABLE 'bewertung'.'t_fragenkatalog' (
+  
+		'id' INT NOT NULL AUTO_INCREMENT,
+  
+		'frage' VARCHAR(45) NOT NULL,
+  
+		PRIMARY KEY ('id'));
+
+	INSERT INTO `bewertung`.`t_fragenkatalog` (`frage`) VALUES ('Wie gut wurde ihrer Meinung nach der Stoff vermittelt?')
+	INSERT INTO `bewertung`.`t_fragenkatalog` (`frage`) VALUES ('Fanden sie den Stoff Zeitgemäß?')
+	INSERT INTO `bewertung`.`t_fragenkatalog` (`frage`) VALUES ('War der Unterricht abwechslungsreich?')
+	INSERT INTO `bewertung`.`t_fragenkatalog` (`frage`) VALUES ('Wurden Fragen zufiedenstellend beantwortet?')
+
+############################################## T_KLASSE ################################################################
+5. CREATE TABLE 'bewertung'.'t_klasse' (
+ 
+		'id' INT NOT NULL AUTO_INCREMENT,
+  
+		'jahrgang' INT NOT NULL,
+  
+		'fachbereich' VARCHAR(5) NOT NULL,
+  
+		'gruppe' CHAR NOT NULL,
+  
+		PRIMARY KEY ('id'));
+
+
+	INSERT INTO `bewertung`.`t_klasse` (`jahrgang`, `fachbereich`, `gruppe`) VALUES (12, 'IT', 'a')
+	INSERT INTO `bewertung`.`t_klasse` (`jahrgang`, `fachbereich`, `gruppe`) VALUES (12, 'IT', 'b')
+
+############################################## T_ERGEBNIS ################################################################
+6. CREATE TABLE 'bewertung'.'t_ergebnis' (
+  
+	'id' INT NOT NULL AUTO_INCREMENT,
+  
+	'fk_fach' INT NOT NULL,
+  
+	'fk_fragenkatalog' INT NOT NULL,
+  
+	'fk_klasse' INT NOT NULL,
+  
+	'fk_lehrer' INT NOT NULL,
+ 
+	'fk_schueler' INT NOT NULL,
+	'ergebnis' INT,
+	PRIMARY KEY ('id'),
+  
+	INDEX 'fk_schueler_idx' ('fk_schueler' ASC),
+  
+	INDEX 'fk_lehrer_idx' ('fk_lehrer' ASC),
+	INDEX 'fk_fragenkatalog_idx' ('fk_fragenkatalog' ASC),
+  
+	INDEX 'fk_fach_idx' ('fk_fach' ASC),
+  
+	INDEX 'fk_klasse_idx' ('fk_klasse' ASC),
+  
+	CONSTRAINT 'fk_schueler'   FOREIGN KEY ('fk_schueler')
+    REFERENCES 'bewertung'.'t_schueler' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  
+	CONSTRAINT 'fk_lehrer'    FOREIGN KEY ('fk_lehrer')
+    REFERENCES 'bewertung'.'t_lehrer' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  
+	CONSTRAINT 'fk_fragenkatalog'
+    FOREIGN KEY ('fk_fragenkatalog')
+    REFERENCES 'bewertung'.'t_fragenkatalog' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  
+	CONSTRAINT 'fk_fach'
+    FOREIGN KEY ('fk_fach')
+    REFERENCES 'bewertung'.'t_fach' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  
+	CONSTRAINT 'fk_klasse'
+    FOREIGN KEY ('fk_klasse')
+    REFERENCES 'bewertung'.'t_klasse' ('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+	INSERT INTO `bewertung`.`t_ergebnis` (`fk_fach`, `fk_fragenkatalog`, `fk_klasse`, `fk_lehrer`, `fk_schueler`) VALUES (1,1,1,1,1)
+	INSERT INTO `bewertung`.`t_ergebnis` (`fk_fach`, `fk_fragenkatalog`, `fk_klasse`, `fk_lehrer`, `fk_schueler`) VALUES (1,2,1,1,1)
+	INSERT INTO `bewertung`.`t_ergebnis` (`fk_fach`, `fk_fragenkatalog`, `fk_klasse`, `fk_lehrer`, `fk_schueler`) VALUES (1,3,1,1,1)
+	INSERT INTO `bewertung`.`t_ergebnis` (`fk_fach`, `fk_fragenkatalog`, `fk_klasse`, `fk_lehrer`, `fk_schueler`) VALUES (1,3,1,1,1)
+
+
